@@ -1,4 +1,4 @@
-export enum CellType  {
+export enum ColorType  {
     BLACK = 'BLACK',
     WHITE = 'WHITE'
 }
@@ -7,9 +7,9 @@ export enum FigureType {
     PAWN = 'PAWN',
     QUEEN = 'QUEEN',
     KING = 'KING',
-    CASTLE = 'CASTLE',
-    ELEPHANT = 'ELEPHANT',
-    HORSE = 'HORSE'
+    BISHOP = 'BISHOP',
+    ROOK = 'ROOK',
+    KNIGHT = 'KNIGHT'
 }
 
 export type Position = {
@@ -21,19 +21,14 @@ export interface FigureI{
     type: FigureType,
     position: Position,
     img: string,
-    color: CellType,
+    color: ColorType,
     steps: Position[],
-    strategy: any,
+    strategy: any | null,
     id: number | string
 }
 
 export interface CellI{
-    type: CellType,
+    type: ColorType,
     position: Position,
     figure: FigureI | null
-}
-
-interface User{
-    figuresType : CellType,
-    availableFigures: FigureI[],
 }

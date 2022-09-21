@@ -1,31 +1,21 @@
 import * as React from 'react'
 import {FC, useEffect, useState} from 'react'
-import {CellI, CellType, FigureI, FigureType} from "./types";
+import {CellI, ColorType, FigureI, FigureType} from "./types";
 import styles from './Board.module.sass'
-import black_horse_img from "./assets/horse_black.png";
-import white_pawn_img from './assets/white_pawn.png'
-import black_pawn_img from './assets/black_pawn.png'
 import {Cell} from "./Cell";
 import {useEffectOnce} from "react-use";
+import {findPosition} from "./data/utils";
+import {Bishop, King, Knight, Pawn, Queen, Rook} from "./data/models";
 
 
 interface Props{
     isStarted: boolean
-}
-const findPosition = (x: number, y: number) => {
-    if(( x % 2 === 0  && y % 2 !== 0) || (x % 2 !== 0 && y % 2 === 0)) {
-        return CellType.BLACK
-    }
-    else{
-       return CellType.WHITE
-    }
 }
 
 export const Board: FC<Props> = (props) => {
     const [board, setBoard] = useState<CellI[][]>([]);
     const [figures, setFigures] = useState<FigureI[]>([])
     const [selectedFigure, setSelectedFigure] = useState<FigureI | null>(null)
-    const [killed, setKilled] = useState<FigureI[]>([]);
 
     useEffect(()=> {
        if(props.isStarted){
@@ -49,96 +39,70 @@ export const Board: FC<Props> = (props) => {
     },[props.isStarted, figures])
 
     useEffectOnce(()=> {
-        const res: FigureI[] = []
-        for(let i = 0; i < 8; i++){
-            const white_pawn: FigureI = {
-                type: FigureType.PAWN,
-                id: `x${i}y${6}`,
-                position: {
-                    x: i,
-                    y:6,
-                },
-                img: white_pawn_img,
-                color: CellType.WHITE,
-                steps: [{
-                    x: i,
-                    y: 6
-                }],
-                strategy: undefined
-            }
-            const black_pawn: FigureI = {
-                type: FigureType.PAWN,
-                id:`x${i}y${1}`,
-                position: {
-                    x: i,
-                    y: 1
-                },
-                img: black_pawn_img,
-                color: CellType.BLACK,
-                steps: [{
-                    x: i,
-                    y: 1
-                }],
-                strategy: undefined
-            }
-            res.push(white_pawn, black_pawn)
-        }
-        res.push({
-            type: FigureType.HORSE,
-            id: `x${1}y${0}`,
-            position: {
-                x: 1,
-                y: 0,
-            },
-            img: black_horse_img,
-            color: CellType.BLACK,
-            steps: [{
-                x: 1,
-                y: 0,
-            }],
-            strategy: undefined
-        })
+        const res: FigureI[] = [];
+        res.push(Knight(ColorType.BLACK, `x${1}y${0}`, {
+            x: 1,
+            y: 0,
+        }))
+        res.push(Rook(ColorType.WHITE, `x${7}y${7}`, {
+            x: 7,
+            y: 7,
+        }))
+
+        res.push(Bishop(ColorType.WHITE, `x${3}y${3}`, {
+            x: 3,
+            y: 3,
+        }))
+        res.push(Queen(ColorType.WHITE, `x${4}y${4}`, {
+            x: 4,
+            y: 4,
+        }))
+        res.push(Pawn(ColorType.BLACK, `x${5}y${3}`, {
+            x: 5,
+            y: 3,
+        }))
+        res.push(King(ColorType.BLACK, `x${2}y${3}`, {
+            x: 2,
+            y: 3,
+        }))
         setFigures(res);
     })
 
-    const onKill = (target:FigureI) => {
-        setKilled([...killed, target]);
-        setFigures((prev) => prev.filter(i => i.id !== target.id));
-    }
     return (
         <div className={styles.container}>
-            <div className={styles.stats}>
-                <h2>BLACK</h2>
-                {killed.filter(t => t.color === CellType.BLACK).map(i =>
-                    <div key={i.id}>
-                        <div>
-                            <div>{i.type}</div>
-                            <div>{i.id}</div>
-                        </div>
-                    </div>
-                )}
-                <h2>
-                    WHITE:
-                </h2>
-                {killed.filter(t => t.color === CellType.WHITE).map(i =>
-                    <div key={i.id}>
-                        <div>
-                            <div>{i.type}</div>
-                            <div>{i.id}</div>
-                        </div>
-                    </div>
-                )}
-            </div>
+            {/*<div className={styles.stats}>*/}
+            {/*    <h2>BLACK</h2>*/}
+            {/*    {killed.filter(t => t.color === CellType.BLACK).map(i =>*/}
+            {/*        <div key={i.id}>*/}
+            {/*            <div>*/}
+            {/*                <div>{i.type}</div>*/}
+            {/*                <div>{i.id}</div>*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*    )}*/}
+            {/*    <h2>*/}
+            {/*        WHITE:*/}
+            {/*    </h2>*/}
+            {/*    {killed.filter(t => t.color === CellType.WHITE).map(i =>*/}
+            {/*        <div key={i.id}>*/}
+            {/*            <div>*/}
+            {/*                <div>{i.type}</div>*/}
+            {/*                <div>{i.id}</div>*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*    )}*/}
+            {/*</div>*/}
             <div className={styles.board}>
                 {board?.map((row, key) =>
                     <React.Fragment key={key}>
                         {row.map((cell, index) =>
-                            <Cell setFigures={setFigures}
+                            <Cell
                                   selectedFigure={selectedFigure}
                                   setSelectedFigure={setSelectedFigure}
-                                  figures={figures}
                                   key={index}
-                                  setKilled={onKill}
+                                  figures={figures}
+                                  setFigures={setFigures}
+                                  isAvailable={selectedFigure?.strategy(selectedFigure, cell)}
                                   cell={cell}/>
                         )}
                     </React.Fragment>
