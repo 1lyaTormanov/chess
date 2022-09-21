@@ -48,7 +48,7 @@ export const Cell: FC<Props> = (
          `}
             onClick={onMove}
         >
-            {selectedFigure && selectedFigure?.strategy(selectedFigure, cell ) &&
+            { isAvailable &&
                 <div className={styles.available}>*</div> }
 
             x: {cell.position.x}
