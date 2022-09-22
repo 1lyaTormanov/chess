@@ -1,5 +1,5 @@
 import {CellI, FigureI} from "../types";
-import {getModule, hasAllyFigure, isAvailableDiagonal, isXEquals, isYEquals} from "./utils";
+import {getModule, hasAllyFigure, isAvailableDiagonal, isXEquals, isXYEqual, isYEquals} from "./utils";
 
 export const horseStrategy = (current: FigureI, target: CellI): boolean => {
     if(!isYEquals(current.position, target.position) && !hasAllyFigure(current, target) && !isXEquals(current.position, target.position)){
@@ -9,7 +9,8 @@ export const horseStrategy = (current: FigureI, target: CellI): boolean => {
     return false
 }
 
-export const rookStrategy = (current: FigureI, target: CellI): boolean => {
+export const rookStrategy = (current: FigureI, target: CellI, array: CellI[]): boolean => {
+
     return (isXEquals(current.position, target.position) || isYEquals(current.position, target.position)) && !hasAllyFigure(current, target);
 }
 

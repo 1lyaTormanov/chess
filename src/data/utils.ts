@@ -1,5 +1,15 @@
 import {CellI, ColorType, FigureI, Position} from "../types";
 
+export const makeBy = (count: number, callback: (i: number) => any) => {
+    const res = [];
+    for(let i = 0; i < count; i++){
+        res.push(callback(i));
+    }
+
+    return res;
+}
+
+
 export const isAvailableDiagonal = (current: FigureI, target: CellI) => {
     const module = getModule(current.position, target.position);
 

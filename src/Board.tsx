@@ -1,11 +1,11 @@
 import * as React from 'react'
 import {FC, useEffect, useState} from 'react'
-import {CellI, ColorType, FigureI, FigureType} from "./types";
+import {CellI, FigureI} from "./types";
 import styles from './Board.module.sass'
 import {Cell} from "./Cell";
 import {useEffectOnce} from "react-use";
 import {findPosition} from "./data/utils";
-import {Bishop, King, Knight, Pawn, Queen, Rook} from "./data/models";
+import {initFigures} from "./data/data_creator";
 
 
 interface Props{
@@ -39,33 +39,7 @@ export const Board: FC<Props> = (props) => {
     },[props.isStarted, figures])
 
     useEffectOnce(()=> {
-        const res: FigureI[] = [];
-        res.push(Knight(ColorType.BLACK, `x${1}y${0}`, {
-            x: 1,
-            y: 0,
-        }))
-        res.push(Rook(ColorType.WHITE, `x${7}y${7}`, {
-            x: 7,
-            y: 7,
-        }))
-
-        res.push(Bishop(ColorType.WHITE, `x${3}y${3}`, {
-            x: 3,
-            y: 3,
-        }))
-        res.push(Queen(ColorType.WHITE, `x${4}y${4}`, {
-            x: 4,
-            y: 4,
-        }))
-        res.push(Pawn(ColorType.BLACK, `x${5}y${3}`, {
-            x: 5,
-            y: 3,
-        }))
-        res.push(King(ColorType.BLACK, `x${2}y${3}`, {
-            x: 2,
-            y: 3,
-        }))
-        setFigures(res);
+        setFigures(initFigures());
     })
 
     return (
@@ -102,7 +76,7 @@ export const Board: FC<Props> = (props) => {
                                   key={index}
                                   figures={figures}
                                   setFigures={setFigures}
-                                  isAvailable={selectedFigure?.strategy(selectedFigure, cell)}
+                                  isAvailable={selectedFigure?.strategy(selectedFigure, cell, row)}
                                   cell={cell}/>
                         )}
                     </React.Fragment>
