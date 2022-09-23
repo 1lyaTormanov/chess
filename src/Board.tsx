@@ -36,7 +36,7 @@ export const Board: FC<Props> = (props) => {
            }
            setBoard(res)
        }
-    },[props.isStarted, figures])
+    },[props.isStarted, figures, selectedFigure])
 
     useEffectOnce(()=> {
         setFigures(initFigures());
