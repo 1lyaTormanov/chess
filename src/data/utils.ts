@@ -1,17 +1,23 @@
 import {CellI, ColorType, FigureI, FigureType, Position} from "../types";
 
 export const isKing = (current: FigureI, target:CellI) => {
-    if(target.figure && target.figure.type === FigureType.KING){
-        return true
-    }
-    return false
+    return !!(target.figure && target.figure.type === FigureType.KING);
+
 }
 
-export const isAvailableVertical = (current: FigureI, target:CellI, array: CellI[]) => {
-    const min = Math.min(current.position.y, target.position.y);
-    const max = Math.max(current.position.y, target.position.y);
+export const  isTurnRepeat = (current: FigureI, target:CellI) => {
+    return current.steps.find(i => isXYEqual(i, target.position))
+}
 
-    if(current.position.x !== target.position.x){
+export const isInitialPosition = (current:FigureI) => {
+    return isXYEqual(current.position , current.steps[0]);
+}
+
+export const isAvailableVertical = (current: FigureI, target:Position, array: CellI[]) => {
+    const min = Math.min(current.position.y, target.y);
+    const max = Math.max(current.position.y, target.y);
+
+    if(current.position.x !== target.x){
         return false
     }
     for(let i = min + 1 ; i < max; i++){

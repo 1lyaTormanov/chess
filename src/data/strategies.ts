@@ -3,8 +3,8 @@ import {
     getModule,
     hasAllyFigure,
     isAvailableDiagonal, isAvailableHorizontal,
-    isAvailableVertical,
-    isXEquals,
+    isAvailableVertical, isBlack, isInitialPosition, isTurnRepeat,
+    isXEquals, isXYEqual,
     isYEquals
 } from "./utils";
 
@@ -18,7 +18,7 @@ export const horseStrategy = (current: FigureI, target: CellI): boolean => {
 
 export const rookStrategy = (current: FigureI, target: CellI, array: CellI[]): boolean => {
 
-    return (isAvailableVertical(current, target, array)
+    return (isAvailableVertical(current, target.position, array)
         || isAvailableHorizontal(current, target, array)
     ) && !hasAllyFigure(current, target)  ;
 }
@@ -32,7 +32,7 @@ export const bishopStrategy = (current: FigureI, target: CellI, array: CellI[]):
 
 export const queenStrategy = (current: FigureI, target: CellI , array: CellI[]): boolean => {
     return (
-            (isAvailableVertical(current, target, array)
+            (isAvailableVertical(current, target.position, array)
                 || isAvailableHorizontal(current, target, array))
             || isAvailableDiagonal(current, target, array)
            )
@@ -41,8 +41,14 @@ export const queenStrategy = (current: FigureI, target: CellI , array: CellI[]):
 }
 
 export const pawnStrategy = (current: FigureI, target: CellI): boolean => {
-    if(isXEquals(current.position, target.position) && !hasAllyFigure(current, target)){
-        return current.position.y - target.position.y === 1
+    const module = getModule(current.position, target.position);
+    if(isXEquals(current.position, target.position) && !hasAllyFigure(current, target) && !isTurnRepeat(current,target) ){
+        if(isInitialPosition(current)){
+            return module.y <= 2
+        }
+        else{
+            return isBlack(current.color) ? (current.position.y - target.position.y ) === -1 : (current.position.y - target.position.y ) === 1
+        }
     }
     return false
 }
