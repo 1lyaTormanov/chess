@@ -18,19 +18,23 @@ export const horseStrategy = (current: FigureI, target: CellI): boolean => {
 
 export const rookStrategy = (current: FigureI, target: CellI, array: CellI[]): boolean => {
 
-    return (isAvailableVertical(current, target, array) || isAvailableHorizontal(current, target, array)) && !hasAllyFigure(current, target)  ;
+    return (isAvailableVertical(current, target, array)
+        || isAvailableHorizontal(current, target, array)
+    ) && !hasAllyFigure(current, target)  ;
 }
 
-export const bishopStrategy = (current: FigureI, target: CellI): boolean => {
+export const bishopStrategy = (current: FigureI, target: CellI, array: CellI[]): boolean => {
     if(!isYEquals(current.position, target.position) && !hasAllyFigure(current, target) && !isXEquals(current.position, target.position)){
-        return isAvailableDiagonal(current, target)
+        return isAvailableDiagonal(current, target, array)
     }
     return false
 }
 
 export const queenStrategy = (current: FigureI, target: CellI , array: CellI[]): boolean => {
     return (
-            (isAvailableVertical(current, target, array) || isAvailableHorizontal(current, target, array))
+            (isAvailableVertical(current, target, array)
+                || isAvailableHorizontal(current, target, array))
+            || isAvailableDiagonal(current, target, array)
            )
             &&
             !hasAllyFigure(current, target)
@@ -43,11 +47,11 @@ export const pawnStrategy = (current: FigureI, target: CellI): boolean => {
     return false
 }
 
-export const kingStrategy = (current: FigureI, target: CellI) => {
+export const kingStrategy = (current: FigureI, target: CellI, array: CellI[]) => {
     if((
         (isYEquals(current.position, target.position)
             || isXEquals(current.position, target.position))
-            || isAvailableDiagonal(current, target))
+            || isAvailableDiagonal(current, target, array))
             &&
             !hasAllyFigure(current, target))
     {

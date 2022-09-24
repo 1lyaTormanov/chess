@@ -1,4 +1,11 @@
-import {CellI, ColorType, FigureI, Position} from "../types";
+import {CellI, ColorType, FigureI, FigureType, Position} from "../types";
+
+export const isKing = (current: FigureI, target:CellI) => {
+    if(target.figure && target.figure.type === FigureType.KING){
+        return true
+    }
+    return false
+}
 
 export const isAvailableVertical = (current: FigureI, target:CellI, array: CellI[]) => {
     const min = Math.min(current.position.y, target.position.y);
@@ -7,7 +14,6 @@ export const isAvailableVertical = (current: FigureI, target:CellI, array: CellI
     if(current.position.x !== target.position.x){
         return false
     }
-
     for(let i = min + 1 ; i < max; i++){
         if(array.find(el => el.position.x === current.position.x && el.position.y === i)?.figure){
             return false
@@ -19,11 +25,11 @@ export const isAvailableVertical = (current: FigureI, target:CellI, array: CellI
 export const isAvailableHorizontal = (current: FigureI, target:CellI, array: CellI[]) => {
     const min = Math.min(current.position.x, target.position.x);
     const max = Math.max(current.position.x, target.position.x);
+
     if(current.position.y !== target.position.y){
         return false
     }
-
-    for(let i = min; i < max; i++){
+    for(let i = min + 1 ; i < max; i++){
         if(array.find(el => el.position.y === current.position.y && el.position.x === i)?.figure){
             return false
         }
@@ -31,10 +37,23 @@ export const isAvailableHorizontal = (current: FigureI, target:CellI, array: Cel
     return true
 }
 
-export const isAvailableDiagonal = (current: FigureI, target: CellI) => {
+export const isAvailableDiagonal = (current: FigureI, target: CellI, array: CellI[]) => {
     const module = getModule(current.position, target.position);
+    if(module.x !== module.y){
+        return false
+    }
+    const dy = current.position.y < target.position.y ? 1 : - 1;
+    const dx = current.position.x < target.position.x ? 1 : - 1;
 
-    return (module.x === module.y)
+    for( let i = 0; i < module.y; i++){
+        if(array.find(el => {
+            return  (el.position.x === current.position.x + dx * i && el.position.y === current.position.y + dy * i)
+                && !isXYEqual(current.position, el.position)
+        })?.figure){
+            return false
+        }
+    }
+    return true
 }
 
 

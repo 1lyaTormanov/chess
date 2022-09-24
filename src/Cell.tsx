@@ -24,6 +24,8 @@ export const Cell: FC<Props> = (
         figures,
         setFigures }
 ) => {
+
+    const isEnemy = cell?.figure?.color !== selectedFigure?.color && cell.figure
     const onMove = () => {
         if(selectedFigure){
             if(isAvailable){
@@ -49,10 +51,7 @@ export const Cell: FC<Props> = (
             onClick={onMove}
         >
             { isAvailable &&
-                <div className={styles.available}>*</div> }
-
-            x: {cell.position.x}
-            y: {cell.position.y}
+                <div className={`${styles.cell_data} ${isEnemy ? styles.enemy_cell : styles.available}`}/> }
             {cell.figure && <img onClick={()=> setSelectedFigure(cell.figure)} src={cell.figure.img}/>}
         </div>
     )

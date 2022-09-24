@@ -10,12 +10,18 @@
   width: 64px
   height: 64px
   display: flex
+  position: relative
   justify-content: center
   align-items: center
+  .cell_data
+    width: 64px
+    height: 64px
+    position: absolute
+  .enemy_cell
+    background: indianred
   .available
-    width: 32px
-    height: 32px
-    color: green
+    background: green
   img
+    z-index: 100
     width: 40px
     height: 40px

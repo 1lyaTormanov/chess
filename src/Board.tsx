@@ -76,7 +76,7 @@ export const Board: FC<Props> = (props) => {
                                   key={index}
                                   figures={figures}
                                   setFigures={setFigures}
-                                  isAvailable={selectedFigure?.strategy(selectedFigure, cell, row)}
+                                  isAvailable={selectedFigure?.strategy(selectedFigure, cell, board.flat())}
                                   cell={cell}/>
                         )}
                     </React.Fragment>
