@@ -10,8 +10,9 @@ interface Props{
     selectedFigure: FigureI | null,
     setSelectedFigure: (value: FigureI | null) => void,
     isAvailable: boolean,
-    figures: FigureI[]
-    setFigures: (data: FigureI[]) => void
+    figures: FigureI[],
+    updateCell: (cell: CellI) => void,
+    setFigures: (data: FigureI[]) => void,
 }
 
 
@@ -22,6 +23,7 @@ export const Cell: FC<Props> = (
         setSelectedFigure,
         isAvailable,
         figures,
+        updateCell,
         setFigures }
 ) => {
 
@@ -41,6 +43,7 @@ export const Cell: FC<Props> = (
                     }
                 })
                 setFigures(result);
+                updateCell(cell);
             }
         }
     }
@@ -53,11 +56,17 @@ export const Cell: FC<Props> = (
         >
             { isAvailable &&
                 <div className={`${styles.cell_data} ${isEnemy ? styles.enemy_cell : styles.available}`}/> }
+
             <div>
                 x{cell.position.x}
                 y{cell.position.y}
             </div>
-            {cell.figure && <img onClick={()=> setSelectedFigure(cell.figure)} src={cell.figure.img}/>}
+
+            {cell.figure && <img onClick={()=> {
+                if(!selectedFigure || selectedFigure.color === cell.figure?.color){
+                    setSelectedFigure(cell.figure)
+                }
+            }} src={cell.figure.img}/>}
         </div>
     )
 }

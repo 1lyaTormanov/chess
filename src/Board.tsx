@@ -1,10 +1,10 @@
 import * as React from 'react'
 import {FC, useEffect, useState} from 'react'
-import {CellI, FigureI} from "./types";
+import {CellI, ColorType, FigureI} from "./types";
 import styles from './Board.module.sass'
 import {Cell} from "./Cell";
 import {useEffectOnce} from "react-use";
-import {findPosition} from "./data/utils";
+import {findPosition, isXYEqual} from "./data/utils";
 import {initFigures} from "./data/data_creator";
 
 
@@ -16,6 +16,7 @@ export const Board: FC<Props> = (props) => {
     const [board, setBoard] = useState<CellI[][]>([]);
     const [figures, setFigures] = useState<FigureI[]>([])
     const [selectedFigure, setSelectedFigure] = useState<FigureI | null>(null)
+    const [killed, setKilled] = useState<FigureI[]>([]);
 
     useEffect(()=> {
        if(props.isStarted){
@@ -36,36 +37,53 @@ export const Board: FC<Props> = (props) => {
            }
            setBoard(res)
        }
-    },[props.isStarted, figures, selectedFigure])
+    },[props.isStarted, figures])
 
     useEffectOnce(()=> {
         setFigures(initFigures());
     })
 
+    const updateCell = (cell: CellI) => {
+        if(selectedFigure){
+            const result = board.map((row, index) => {
+                if(row.find((elem) => isXYEqual(cell.position, elem.position) )){
+                    const rowIndex = row.findIndex(l => isXYEqual(cell.position, l.position));
+                    row[rowIndex] = cell;
+                }
+                return row
+            })
+            setBoard(result)
+            if(cell.figure && cell.figure.id !== selectedFigure.id){
+                setFigures(figures.filter(i => i.id !== cell.figure?.id))
+                setKilled([...killed, cell.figure]);
+            }
+        }
+    }
+
     return (
         <div className={styles.container}>
-            {/*<div className={styles.stats}>*/}
-            {/*    <h2>BLACK</h2>*/}
-            {/*    {killed.filter(t => t.color === CellType.BLACK).map(i =>*/}
-            {/*        <div key={i.id}>*/}
-            {/*            <div>*/}
-            {/*                <div>{i.type}</div>*/}
-            {/*                <div>{i.id}</div>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*    )}*/}
-            {/*    <h2>*/}
-            {/*        WHITE:*/}
-            {/*    </h2>*/}
-            {/*    {killed.filter(t => t.color === CellType.WHITE).map(i =>*/}
-            {/*        <div key={i.id}>*/}
-            {/*            <div>*/}
-            {/*                <div>{i.type}</div>*/}
-            {/*                <div>{i.id}</div>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*    )}*/}
-            {/*</div>*/}
+            <div className={styles.stats}>
+                <h2>BLACK</h2>
+                {killed.filter(t => t.color === ColorType.BLACK).map(i =>
+                    <div key={i.id}>
+                        <div>
+                            <div>{i.type}</div>
+                            <div>{i.id}</div>
+                        </div>
+                    </div>
+                )}
+                <h2>
+                    WHITE:
+                </h2>
+                {killed.filter(t => t.color === ColorType.WHITE).map(i =>
+                    <div key={i.id}>
+                        <div>
+                            <div>{i.type}</div>
+                            <div>{i.id}</div>
+                        </div>
+                    </div>
+                )}
+            </div>
             <div className={styles.board}>
                 {board?.map((row, key) =>
                     <React.Fragment key={key}>
@@ -74,6 +92,7 @@ export const Board: FC<Props> = (props) => {
                                   selectedFigure={selectedFigure}
                                   setSelectedFigure={setSelectedFigure}
                                   key={index}
+                                  updateCell={updateCell}
                                   figures={figures}
                                   setFigures={setFigures}
                                   isAvailable={selectedFigure?.strategy(selectedFigure, cell, board.flat())}
