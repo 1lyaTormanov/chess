@@ -9,7 +9,8 @@ import {initFigures} from "./data/data_creator";
 
 
 interface Props{
-    isStarted: boolean
+    isStarted: boolean,
+    figuresColor: ColorType
 }
 
 export const Board: FC<Props> = (props) => {
@@ -45,14 +46,16 @@ export const Board: FC<Props> = (props) => {
 
     const updateCell = (cell: CellI) => {
         if(selectedFigure){
-            const result = board.map((row, index) => {
+            const result = board.map((row) => {
                 if(row.find((elem) => isXYEqual(cell.position, elem.position) )){
                     const rowIndex = row.findIndex(l => isXYEqual(cell.position, l.position));
                     row[rowIndex] = cell;
                 }
                 return row
             })
+
             setBoard(result)
+
             if(cell.figure && cell.figure.id !== selectedFigure.id){
                 setFigures(figures.filter(i => i.id !== cell.figure?.id))
                 setKilled([...killed, cell.figure]);
@@ -94,6 +97,7 @@ export const Board: FC<Props> = (props) => {
                                   key={index}
                                   updateCell={updateCell}
                                   figures={figures}
+                                  figuresColor={props.figuresColor}
                                   setFigures={setFigures}
                                   isAvailable={selectedFigure?.strategy(selectedFigure, cell, board.flat())}
                                   cell={cell}/>

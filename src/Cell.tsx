@@ -13,6 +13,7 @@ interface Props{
     figures: FigureI[],
     updateCell: (cell: CellI) => void,
     setFigures: (data: FigureI[]) => void,
+    figuresColor: ColorType
 }
 
 
@@ -24,6 +25,7 @@ export const Cell: FC<Props> = (
         isAvailable,
         figures,
         updateCell,
+        figuresColor,
         setFigures }
 ) => {
 
@@ -63,7 +65,7 @@ export const Cell: FC<Props> = (
             </div>
 
             {cell.figure && <img onClick={()=> {
-                if(!selectedFigure || selectedFigure.color === cell.figure?.color){
+                if((!selectedFigure || selectedFigure.color === cell.figure?.color) && figuresColor === cell.figure?.color ){
                     setSelectedFigure(cell.figure)
                 }
             }} src={cell.figure.img}/>}

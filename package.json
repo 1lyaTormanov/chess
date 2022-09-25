@@ -44,6 +44,8 @@
     ]
   },
   "devDependencies": {
-    "fp-ts": "^2.12.3"
+    "fp-ts": "^2.12.3",
+    "react-router": "^6.4.1",
+    "react-router-dom": "^6.4.1"
   }
 }
