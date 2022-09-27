@@ -25,7 +25,6 @@ export const Cell: FC<Props> = (
         onMove
     }
 ) => {
-
     return (
         <div className={` ${ styles.cell}
          ${cell.type === ColorType.BLACK ? styles.cell_black : styles.cell_white}

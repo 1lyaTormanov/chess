@@ -1,9 +1,9 @@
-import {CellI, FigureI, FigureType} from "../types";
+import {CellI, FigureI} from "../types";
 import {
     getModule,
     hasAllyFigure,
     isAvailableDiagonal, isAvailableHorizontal,
-    isAvailableVertical, isBlack, isInitialPosition, isKing, isTurnRepeat,
+    isAvailableVertical, isBlack, isInitialPosition, isTurnRepeat,
     isXEquals, isXYEqual,
     isYEquals
 } from "./utils";

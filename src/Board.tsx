@@ -116,10 +116,11 @@ export const Board: FC<Props> = (props) => {
         })
     },[board, selectedFigure, figures])
 
+
     const onMove = (cell: CellI, isAvailable: boolean) =>  {
             if(selectedFigure){
                 const isSingle = props.gameParams.type === GameType.SINGLE
-                const isSwapFigure = selectedFigure.type === FigureType.PAWN && module.y !== 5;
+                const isSwapFigure = selectedFigure.type === FigureType.PAWN && module.y === 5;
                 if(isAvailable){
                     const result = figures.map(i => {
                         if(isXYEqual(i.position, selectedFigure?.position)){
@@ -133,14 +134,13 @@ export const Board: FC<Props> = (props) => {
                     })
                     setFigures(result);
                     updateCell(cell);
-                    if(isSingle && isSwapFigure){
+                    if(isSingle && !isSwapFigure){
                         props.setGameParams({figuresColor: isWhite})
                     }
-                    setSelectedFigure(isSingle && isSwapFigure ? null : selectedFigure)
+                    setSelectedFigure( isSwapFigure ? selectedFigure : null);
                 }
             }
         }
-
 
     return (
         <div className={styles.container}>
