@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {FC} from 'react'
-import {CellI, ColorType, FigureI} from "./types";
+import {CellI, ColorType, FigureI, GameParams} from "./types";
 import styles from './Cell.module.sass'
-import {isXYEqual} from "./data/utils";
+import {isEnemy, isXYEqual} from "./data/utils";
 
 
 interface Props{
@@ -10,10 +10,8 @@ interface Props{
     selectedFigure: FigureI | null,
     setSelectedFigure: (value: FigureI | null) => void,
     isAvailable: boolean,
-    figures: FigureI[],
-    updateCell: (cell: CellI) => void,
-    setFigures: (data: FigureI[]) => void,
-    figuresColor: ColorType
+    gameParams: GameParams,
+    onMove: (cell: CellI, available: boolean) => void
 }
 
 
@@ -23,41 +21,20 @@ export const Cell: FC<Props> = (
         selectedFigure,
         setSelectedFigure,
         isAvailable,
-        figures,
-        updateCell,
-        figuresColor,
-        setFigures }
+        gameParams,
+        onMove
+    }
 ) => {
 
-    const isEnemy = cell?.figure?.color !== selectedFigure?.color && cell.figure;
-
-    const onMove = () => {
-        if(selectedFigure){
-            if(isAvailable){
-                const result = figures.map(i => {
-                    if(isXYEqual(i.position, selectedFigure?.position)){
-                        i.position = cell.position
-                        i.steps.push(cell.position)
-                        return i
-                    }
-                    else{
-                        return i
-                    }
-                })
-                setFigures(result);
-                updateCell(cell);
-            }
-        }
-    }
     return (
         <div className={` ${ styles.cell}
          ${cell.type === ColorType.BLACK ? styles.cell_black : styles.cell_white}
          ${selectedFigure && isXYEqual(cell.position, selectedFigure?.position) && styles.selected}
          `}
-            onClick={onMove}
+            onClick={()=> onMove(cell, isAvailable)}
         >
             { isAvailable &&
-                <div className={`${styles.cell_data} ${isEnemy ? styles.enemy_cell : styles.available}`}/> }
+                <div className={`${styles.cell_data} ${isEnemy(selectedFigure, cell) ? styles.enemy_cell : styles.available}`}/> }
 
             <div>
                 x{cell.position.x}
@@ -65,7 +42,7 @@ export const Cell: FC<Props> = (
             </div>
 
             {cell.figure && <img onClick={()=> {
-                if((!selectedFigure || selectedFigure.color === cell.figure?.color) && figuresColor === cell.figure?.color ){
+                if((!selectedFigure || selectedFigure.color === cell.figure?.color) && gameParams.figuresColor === cell.figure?.color ){
                     setSelectedFigure(cell.figure)
                 }
             }} src={cell.figure.img}/>}

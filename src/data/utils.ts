@@ -1,9 +1,30 @@
 import {CellI, ColorType, FigureI, FigureType, Position} from "../types";
+import {Bishop, Knight, Queen, Rook} from "./models";
 
-export const isKing = (current: FigureI, target:CellI) => {
+export const isKing = (target:CellI) => {
     return !!(target.figure && target.figure.type === FigureType.KING);
 
 }
+
+export const isCheck = (current: FigureI, target: CellI, array: CellI[]) => {
+
+    return false
+}
+
+// export const canCastling = (current: FigureI, target: CellI, array: CellI[]) => {
+//     const min = Math.min(current.position.x, target.position.x);
+//     const max = Math.max(current.position.x, target.position.x);
+//     // console.log(target.figure?.type);
+//
+//     const availableCells:CellI[] = [];
+//
+//     if(current.position.y !== target.position.y || current.type !== FigureType.KING){
+//         return false
+//     }
+//
+//
+//     return false
+// }
 
 export const  isTurnRepeat = (current: FigureI, target:CellI) => {
     return current.steps.find(i => isXYEqual(i, target.position))
@@ -28,6 +49,13 @@ export const isAvailableVertical = (current: FigureI, target:Position, array: Ce
     return true
 }
 
+export const isEnemy = (selectedFigure: FigureI | null, cell: CellI) => {
+    if(cell.figure && selectedFigure){
+        return cell?.figure?.color !== selectedFigure?.color
+    }
+    return false
+}
+
 export const isAvailableHorizontal = (current: FigureI, target:CellI, array: CellI[]) => {
     const min = Math.min(current.position.x, target.position.x);
     const max = Math.max(current.position.x, target.position.x);
@@ -40,6 +68,7 @@ export const isAvailableHorizontal = (current: FigureI, target:CellI, array: Cel
             return false
         }
     }
+
     return true
 }
 
@@ -108,4 +137,20 @@ export const isYEquals = (curr: Position, target:Position) => {
 
 export const isXYEqual = (curr: Position, target: Position) => {
     return isXEquals(curr, target) && isYEquals(curr, target)
+}
+
+
+export const typeToFigure = (type: FigureType, props: Partial<FigureI>) => {
+    if(props.color && props.id && props.position && props.steps){
+        switch (type) {
+            case FigureType.BISHOP :
+                return Bishop(props.color, props.id, props.position, props.steps)
+            case FigureType.ROOK :
+                return Rook(props.color, props.id, props.position, props.steps)
+            case FigureType.QUEEN :
+                return Queen(props.color, props.id, props.position, props.steps)
+            case FigureType.KNIGHT :
+                return Knight(props.color, props.id, props.position, props.steps)
+        }
+    }
 }

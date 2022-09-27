@@ -1,9 +1,9 @@
-import {CellI, FigureI} from "../types";
+import {CellI, FigureI, FigureType} from "../types";
 import {
     getModule,
     hasAllyFigure,
     isAvailableDiagonal, isAvailableHorizontal,
-    isAvailableVertical, isBlack, isInitialPosition, isTurnRepeat,
+    isAvailableVertical, isBlack, isInitialPosition, isKing, isTurnRepeat,
     isXEquals, isXYEqual,
     isYEquals
 } from "./utils";
@@ -56,15 +56,17 @@ export const pawnStrategy = (current: FigureI, target: CellI, array: CellI[]): b
 }
 
 export const kingStrategy = (current: FigureI, target: CellI, array: CellI[]) => {
+    const module = getModule(current.position, target.position);
+
     if((
         (
             isYEquals(current.position, target.position)
             || isXEquals(current.position, target.position))
-            || isAvailableDiagonal(current, target, array))
+            || isAvailableDiagonal(current, target, array)
+        )
             &&
             !hasAllyFigure(current, target))
     {
-        const module = getModule(current.position, target.position);
         return (module.x === 1 || module.y === 1)
     }
     return false

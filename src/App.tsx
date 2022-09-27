@@ -1,29 +1,42 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Board} from "./Board";
-import {ColorType} from "./types";
-
+import {ColorType, GameParams, GameType} from "./types";
+import {useSetState} from "react-use";
 
 function App() {
-    const [start, setStart] = useState<boolean>(false);
-    const [figuresColor, setFiguresColor] = useState<ColorType | undefined>();
+  const [gameParams, setGameParams] = useSetState<GameParams>({figuresColor: ColorType.WHITE, start: false, type: GameType.SINGLE})
+
   return (
     <div className="App">
-      <div>
-          <h2>Выберите цвет:</h2>
-          <button onClick={()=> setFiguresColor(ColorType.BLACK)}>
-              Черные
-          </button>
-          <button onClick={()=> setFiguresColor(ColorType.WHITE)}>
-              Белые
-          </button>
-      </div>
-        {figuresColor &&
-            <button onClick={()=> setStart(!start)}>
-                {start? 'Закончить игру': 'Начать игру'}
+        <div>
+            <h2>
+                Выберите режим игры
+            </h2>
+            <button onClick={()=> setGameParams({type: GameType.SINGLE})}>
+                Одиночный
+            </button>
+            <button onClick={()=> setGameParams({type: GameType.ONLINE})}>
+                Онлайн
+            </button>
+        </div>
+        {gameParams.type !== GameType.SINGLE &&
+            <div>
+                <h2>Выберите цвет:</h2>
+                <button onClick={()=> setGameParams({figuresColor: ColorType.BLACK})}>
+                    Черные
+                </button>
+                <button onClick={()=> setGameParams({figuresColor: ColorType.WHITE})}>
+                    Белые
+                </button>
+            </div>
+        }
+        {gameParams.figuresColor &&
+            <button onClick={()=> setGameParams({start: !gameParams.start})}>
+                {gameParams.start? 'Закончить игру': 'Начать игру'}
             </button>
         }
-        {start && figuresColor &&
-            <Board figuresColor={figuresColor} isStarted={start}/>
+        {gameParams.start && gameParams.figuresColor &&
+            <Board setGameParams={setGameParams} gameParams={gameParams}/>
         }
     </div>
   );

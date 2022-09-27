@@ -1,6 +1,6 @@
 export enum ColorType  {
     BLACK = 'BLACK',
-    WHITE = 'WHITE'
+    WHITE = 'WHITE',
 }
 
 export enum FigureType {
@@ -17,6 +17,12 @@ export type Position = {
     y: number
 }
 
+
+export type StrategyType = (current: FigureI, target: CellI, array: CellI[]) => {
+    available: boolean,
+    check: boolean
+}
+
 export interface FigureI{
     type: FigureType,
     position: Position,
@@ -24,11 +30,22 @@ export interface FigureI{
     color: ColorType,
     steps: Position[],
     strategy: any | null,
-    id: number | string
+    id: number | string,
 }
 
 export interface CellI{
     type: ColorType,
     position: Position,
     figure: FigureI | null
+}
+
+export enum GameType{
+    ONLINE = 'ONLINE',
+    SINGLE = 'SINGLE'
+}
+
+export interface GameParams{
+    figuresColor: ColorType,
+    start: boolean,
+    type: GameType
 }
