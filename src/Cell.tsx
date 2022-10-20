@@ -35,10 +35,10 @@ export const Cell: FC<Props> = (
             { isAvailable &&
                 <div className={`${styles.cell_data} ${isEnemy(selectedFigure, cell) ? styles.enemy_cell : styles.available}`}/> }
 
-            <div>
-                x{cell.position.x}
-                y{cell.position.y}
-            </div>
+            {/*<div>*/}
+            {/*    x{cell.position.x}*/}
+            {/*    y{cell.position.y}*/}
+            {/*</div>*/}
 
             {cell.figure && <img onClick={()=> {
                 if((!selectedFigure || selectedFigure.color === cell.figure?.color) && gameParams.figuresColor === cell.figure?.color ){

@@ -49,3 +49,8 @@ export interface GameParams{
     start: boolean,
     type: GameType
 }
+
+export interface ErrorType{
+    error: string,
+    code: number
+}

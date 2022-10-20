@@ -2,12 +2,12 @@ import React from 'react';
 import {Board} from "./Board";
 import {ColorType, GameParams, GameType} from "./types";
 import {useSetState} from "react-use";
+import styles from './App.module.sass'
 
 function App() {
   const [gameParams, setGameParams] = useSetState<GameParams>({figuresColor: ColorType.WHITE, start: false, type: GameType.SINGLE})
-
   return (
-    <div className="App">
+    <div className={styles.app}>
         <div>
             <h2>
                 Выберите режим игры
