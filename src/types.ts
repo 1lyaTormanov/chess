@@ -1,7 +1,3 @@
-export enum ColorType  {
-    BLACK = 'BLACK',
-    WHITE = 'WHITE',
-}
 
 export enum FigureType {
     PAWN = 'PAWN',
@@ -44,6 +40,10 @@ export enum GameType{
     SINGLE = 'SINGLE'
 }
 
+export enum ColorType  {
+    BLACK = 'BLACK',
+    WHITE = 'WHITE',
+}
 export interface GameParams{
     figuresColor: ColorType,
     start: boolean,
@@ -53,4 +53,9 @@ export interface GameParams{
 export interface ErrorType{
     error: string,
     code: number
+}
+
+export interface GameParamsR{
+    data: GameParams,
+    hash: string
 }

@@ -1,11 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Board} from "./Board";
 import {ColorType, GameParams, GameType} from "./types";
 import {useSetState} from "react-use";
 import styles from './App.module.sass'
+import {useDispatch} from "react-redux";
+import {gameParamsActions} from "./saga/actions/actions";
 
 function App() {
   const [gameParams, setGameParams] = useSetState<GameParams>({figuresColor: ColorType.WHITE, start: false, type: GameType.SINGLE})
+  const dispatch = useDispatch();
+
+  useEffect(()=> {
+      dispatch(gameParamsActions.REQUEST.creator({figuresColor: ColorType.WHITE, start: false, type: GameType.SINGLE}))
+  },[dispatch])
+
   return (
     <div className={styles.app}>
         <div>
