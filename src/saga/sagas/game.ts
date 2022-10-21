@@ -1,12 +1,11 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, put, takeEvery, StrictEffect } from 'redux-saga/effects'
 import {submitParamsApi} from "../../api/api_requests/game";
-import {GameParams} from "../../types";
+import {GameParams, GameParamsR} from "../../types";
 import {gameParamsActions} from "../actions/actions";
 
-function* submitGameParams(action: GameParams){
+function* submitGameParams(action: GameParams): Generator<StrictEffect, any, GameParamsR>{
     try{
-        // @ts-ignore
-        const params = yield call(submitParamsApi, action.payload)
+        const params = yield call(submitParamsApi, action)
         yield put(gameParamsActions.SUCCESS.creator(params))
     }
     catch (e) {
