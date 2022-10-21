@@ -6,7 +6,7 @@ export const createReducer = <S, A>(initialState: S, h? : HandlersT<S, A>) => {
     const handleReducer = (
         state = initialState,
         action: ActionType<A>
-    ): ReducerT<S, A> | S => {
+    ): ReducerT<S, ActionType<A>> | S => {
 
         if (handlers.hasOwnProperty(action.type)) {
             const reducer = handlers[action.type];

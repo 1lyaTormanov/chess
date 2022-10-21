@@ -1,5 +1,5 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
-import {submitParamsApi} from "../api_requests/game";
+import { call, put, takeEvery } from 'redux-saga/effects'
+import {submitParamsApi} from "../../api/api_requests/game";
 import {GameParams} from "../../types";
 import {gameParamsActions} from "../actions/actions";
 

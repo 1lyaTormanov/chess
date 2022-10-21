@@ -5,6 +5,7 @@ import {gameParamsActions} from "../actions/actions";
 
 const initialParams: GameParams = {figuresColor: ColorType.BLACK, start: false, type: GameType.SINGLE}
 
+
 export const gameReducer = combineReducers({
     params: createReducer<GameParams, GameParamsR>(initialParams)
         .createBranch(gameParamsActions.SUCCESS.type, (state, action) => ({...state, ...action.payload}))
