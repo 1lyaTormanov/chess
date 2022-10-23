@@ -1,6 +1,6 @@
 import {combineReducers} from "redux";
 import {createReducer} from "../redux_utils/utils";
-import {ColorType, GameParams, GameParamsR, GameType} from "../../types";
+import {ColorType, GameParams, GameParamsR, GameType} from "../../gameTypes";
 import {gameParamsActions} from "../actions/actions";
 
 const initialParams: GameParams = {figuresColor: ColorType.BLACK, start: false, type: GameType.SINGLE}

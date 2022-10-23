@@ -1,4 +1,4 @@
-import {ColorType, FigureI, FigureType, Position} from "../types";
+import {ColorType, FigureI, FigureType, Position} from "../gameTypes";
 import white_knight_img from "../assets/knight_white.png";
 import black_knight_img from "../assets/knight_black.png";
 import black_bishop_img from "../assets/bishop_black.png";

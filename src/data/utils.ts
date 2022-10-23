@@ -1,4 +1,4 @@
-import {CellI, ColorType, FigureI, FigureType, Position} from "../types";
+import {CellI, ColorType, FigureI, FigureType, Position} from "../gameTypes";
 import {Bishop, Knight, Queen, Rook} from "./models";
 
 export const isKing = (target:CellI) => {

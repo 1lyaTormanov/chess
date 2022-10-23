@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {FC, useEffect, useState} from 'react'
-import {CellI, ColorType, FigureI, FigureType, GameParams, GameType, Position} from "./types";
+import {CellI, ColorType, FigureI, FigureType, GameParams, GameType, Position} from "./gameTypes";
 import styles from './Board.module.sass'
 import {Cell} from "./Cell";
 import {useEffectOnce} from "react-use";

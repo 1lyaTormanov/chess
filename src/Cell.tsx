@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {FC} from 'react'
-import {CellI, ColorType, FigureI, GameParams} from "./types";
+import {CellI, ColorType, FigureI, GameParams} from "./gameTypes";
 import styles from './Cell.module.sass'
 import {isEnemy, isXYEqual} from "./data/utils";
 

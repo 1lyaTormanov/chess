@@ -1,7 +1,7 @@
 import {makeBy} from "./utils";
 import {PAWN_AMOUNT} from "./consts";
 import {Bishop, King, Knight, Pawn, Queen, Rook} from "./models";
-import {ColorType, FigureI} from "../types";
+import {ColorType, FigureI} from "../gameTypes";
 
 
 export const generateWhitePawns = makeBy(PAWN_AMOUNT, (index) => {

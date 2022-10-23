@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {Board} from "./Board";
-import {ColorType, GameParams, GameType} from "./types";
+import {ColorType, GameParams, GameType} from "./gameTypes";
 import {useSetState} from "react-use";
 import styles from './App.module.sass'
 import {useDispatch} from "react-redux";

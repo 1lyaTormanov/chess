@@ -1,4 +1,4 @@
-import {CellI, FigureI} from "../types";
+import {CellI, FigureI} from "../gameTypes";
 import {
     getModule,
     hasAllyFigure,
